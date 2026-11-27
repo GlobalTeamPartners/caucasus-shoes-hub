@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Оптовый B2B-Хаб: Система продаж обуви по России | Global Spirit Agency</title>
+  <meta name="description" content="Стратегическое коммерческое предложение и аналитический хаб для крупного производителя обуви на Кавказе: разбор конкурентов в Дагестане, анализ агентств СКФО, архитектура системы 360° и калькулятор ROI.">
+  <style>
+    :root {
+      --bg: #080b12;
+      --bg-elev: #0f1523;
+      --card: #141c2f;
+      --card-2: #19233a;
+      --border: rgba(148, 163, 184, 0.18);
+      --border-strong: rgba(212, 168, 83, 0.42);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --dim: #64748b;
+      --gold: #e5b85c;
+      --gold-soft: rgba(229, 184, 92, 0.14);
+      --emerald: #22c55e;
+      --emerald-soft: rgba(34, 197, 94, 0.14);
+      --cyan: #38bdf8;
+      --cyan-soft: rgba(56, 189, 248, 0.14);
+      --rose: #fb7185;
+      --rose-soft: rgba(251, 113, 133, 0.14);
+      --amber: #f59e0b;
+      --radius: 16px;
+      --radius-sm: 11px;
+      --shadow: 0 18px 42px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      background:
+        radial-gradient(circle at 12% 4%, rgba(229, 184, 92, 0.11), transparent 36%),
+        radial-gradient(circle at 88% 8%, rgba(56, 189, 248, 0.11), transparent 38%),
+        radial-gradient(circle at 50% 96%, rgba(34, 197, 94, 0.08), transparent 42%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      min-height: 100vh;
+      padding-bottom: 64px;
+    }
+
+    /* Sticky Topbar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      background: rgba(8, 11, 18, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 18px;
+    }
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #e5b85c, #b7791f);
+      color: #0b0f19;
+      font-weight: 900;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(229, 184, 92, 0.25);
+      flex-shrink: 0;
+    }
+    .brand-title { font-weight: 800; font-size: 0.95rem; letter-spacing: 0.2px; }
+    .brand-sub { font-size: 0.74rem; color: var(--muted); }
+    .top-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 10px;
+      padding: 8px 13px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      transition: transform 0.12s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+    .btn:hover { border-color: var(--gold); transform: translateY(-1px); }
+    .btn-gold {
+      background: linear-gradient(135deg, #e5b85c, #d49b38);
+      color: #0a0e17;
+      border-color: transparent;
+      font-weight: 800;
+    }
+    .btn-cyan {
+      background: var(--cyan-soft);
+      border-color: rgba(56, 189, 248, 0.35);
+      color: #7dd3fc;
+    }
+    .btn-emerald {
+      background: var(--emerald-soft);
+      border-color: rgba(34, 197, 94, 0.35);
+      color: #86efac;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 18px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Personalizer Drawer */
+    .personalizer {
+      display: none;
+      background: var(--bg-elev);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .personalizer.open { display: block; }
+    .pers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .field { display: flex; flex-direction: column; gap: 4px; }
+    .field label { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; }
+    .field input, .field select {
+      background: #090d16;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 9px;
+      padding: 9px 11px;
+      font-size: 0.86rem;
+      outline: none;
+    }
+    .field input:focus, .field select:focus { border-color: var(--gold); }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, rgba(229, 184, 92, 0.12), rgba(15, 23, 42, 0.92) 48%, rgba(56, 189, 248, 0.1));
+      border: 1px solid var(--border-strong);
+      border-radius: 22px;
+      padding: 26px 24px;
+      box-shadow: var(--shadow);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: var(--gold-soft);
+      border: 1px solid var(--border-strong);
+      color: var(--gold);
+      font-size: 0.73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+    .hero h1 {
+      font-size: clamp(1.45rem, 3vw, 2.2rem);
+      font-weight: 900;
+      line-height: 1.18;
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero-desc {
+      color: #cbd5e1;
+      font-size: 0.96rem;
+      max-width: 900px;
+      margin-bottom: 18px;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(215px, 1fr));
+      gap: 12px;
+    }
+    .kpi-card {
+      background: rgba(9, 13, 22, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .kpi-val { font-size: 1.45rem; font-weight: 900; color: var(--gold); line-height: 1.15; }
+    .kpi-val.cyan { color: var(--cyan); }
+    .kpi-val.em { color: var(--emerald); }
+    .kpi-lbl { font-size: 0.8rem; color: #e2e8f0; font-weight: 700; margin-top: 4px; }
+    .kpi-src { font-size: 0.71rem; color: var(--dim); margin-top: 3px; }
+
+    /* Navigation Tabs */
+    .tabs-wrap {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .tab-btn {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 12px;
+      padding: 10px 15px;
+      font-size: 0.83rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover { color: var(--text); border-color: rgba(229, 184, 92, 0.45); }
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(229, 184, 92, 0.22), rgba(56, 189, 248, 0.14));
+      border-color: var(--gold);
+      color: #fff;
+    }
+    .tab-pane { display: none; flex-direction: column; gap: 16px; }
+    .tab-pane.active { display: flex; }
+
+    /* Cards & Layouts */
+    .section-card {
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .section-head h2 { font-size: 1.15rem; font-weight: 800; color: #fff; }
+    .section-sub { font-size: 0.86rem; color: var(--muted); }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr; } }
+    @media (max-width: 780px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .subcard {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .subcard h3 { font-size: 0.96rem; font-weight: 800; color: #fff; }
+    .subcard p, .subcard li { font-size: 0.84rem; color: #cbd5e1; }
+    .subcard ul { padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      width: fit-content;
+    }
+    .tag-gold { background: var(--gold-soft); color: var(--gold); border: 1px solid rgba(229, 184, 92, 0.35); }
+    .tag-em { background: var(--emerald-soft); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.35); }
+    .tag-cyan { background: var(--cyan-soft); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.35); }
+    .tag-rose { background: var(--rose-soft); color: #fda4af; border: 1px solid rgba(251, 113, 133, 0.35); }
+
+    /* Filters & Tables */
+    .filter-pills { display: flex; gap: 7px; flex-wrap: wrap; }
+    .pill {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .pill.active { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
+
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; font-size: 0.82rem; }
+    th, td { padding: 11px 12px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th {
+      background: #0b1120;
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    tr.highlight-row td { background: rgba(229, 184, 92, 0.07); }
+
+    /* Alert Callout */
+    .callout {
+      border-radius: 14px;
+      padding: 15px 17px;
+      border: 1px solid rgba(34, 197, 94, 0.38);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.11), rgba(56, 189, 248, 0.07));
+    }
+    .callout.warn {
+      border-color: rgba(245, 158, 11, 0.4);
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(251, 113, 133, 0.07));
+    }
+    .callout h4 { font-size: 0.94rem; font-weight: 800; margin-bottom: 5px; color: #fff; }
+    .callout p { font-size: 0.84rem; color: #dbeafe; }
+
+    /* Interactive System Modules + Live TMA Simulator */
+    .module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px;
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+    }
+    .module-card:hover, .module-card.open { border-color: var(--cyan); }
+    .module-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .module-num {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: var(--cyan-soft); color: var(--cyan); font-weight: 900; font-size: 0.82rem;
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .module-body { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); font-size: 0.83rem; color: #cbd5e1; }
+    .module-card.open .module-body { display: block; }
+
+    /* TMA Phone Mockup */
+    .tma-shell {
+      background: #060910;
+      border: 2px solid rgba(56, 189, 248, 0.35);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+    }
+    .tma-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
+    }
+    .tma-sku-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; }
+    .tma-sku {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+    }
+    .tma-sku.selected { border-color: var(--gold); background: rgba(229, 184, 92, 0.08); }
+    .tma-summary {
+      margin-top: 12px;
+      background: var(--card-2);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: 12px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Pricing Cards & Calculator */
+    .tier-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      position: relative;
+    }
+    .tier-card.featured {
+      border: 1.5px solid var(--gold);
+      background: linear-gradient(180deg, rgba(229, 184, 92, 0.1), var(--card) 42%);
+      box-shadow: 0 14px 36px rgba(229, 184, 92, 0.12);
+    }
+    .tier-price { font-size: 1.55rem; font-weight: 900; color: #fff; line-height: 1.15; }
+    .tier-subprice { font-size: 0.84rem; color: var(--gold); font-weight: 700; margin-top: 4px; }
+    .tier-list { list-style: none; display: flex; flex-direction: column; gap: 7px; font-size: 0.82rem; color: #cbd5e1; }
+    .tier-list li::before { content: "✓ "; color: var(--emerald); font-weight: 900; }
+
+    .calc-box {
+      background: linear-gradient(135deg, #10182b, #0c1322);
+      border: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 18px;
+    }
+    .range-row { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+    .range-head { display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 700; }
+    .range-head span:last-child { color: var(--gold); }
+    input[type="range"] { width: 100%; accent-color: var(--gold); cursor: pointer; }
+    .calc-result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .calc-metric {
+      background: rgba(8, 11, 18, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .calc-metric .num { font-size: 1.25rem; font-weight: 900; color: var(--emerald); }
+    .calc-metric .lbl { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+
+    /* Roadmap & FAQ */
+    .timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    .phase {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      border-radius: 13px;
+      padding: 14px;
+    }
+    .phase-time { font-size: 0.73rem; font-weight: 800; color: var(--gold); text-transform: uppercase; }
+    .phase h4 { font-size: 0.94rem; margin: 4px 0 8px; }
+    .phase ul { padding-left: 16px; font-size: 0.81rem; color: #cbd5e1; display: flex; flex-direction: column; gap: 4px; }
+
+    details.faq {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    details.faq summary { font-weight: 800; font-size: 0.88rem; cursor: pointer; list-style: none; }
+    details.faq summary::before { content: "▸ "; color: var(--gold); }
+    details.faq[open] summary::before { content: "▾ "; }
+    details.faq p { margin-top: 8px; font-size: 0.83rem; color: #cbd5e1; }
+
+    .bar-track { height: 8px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; margin-top: 4px; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--emerald)); border-radius: 999px; }
+
+    .footer-cta {
+      background: linear-gradient(135deg, rgba(229, 184, 92, 0.16), rgba(34, 197, 94, 0.1));
+      border: 1px solid var(--border-strong);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    @media print {
+      body { background: #fff !important; color: #111827 !important; padding: 0; }
+      .topbar, .tabs-wrap, .personalizer, .no-print { display: none !important; }
+      .tab-pane { display: flex !important; page-break-inside: avoid; }
+      .section-card, .subcard, .tier-card, .hero, .kpi-card, .calc-box, .phase, .module-card {
+        background: #fff !important;
+        color: #111827 !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+      }
+      .module-body { display: block !important; }
+      .hero h1, .section-head h2, .subcard h3, th, .kpi-val, .tier-price, .calc-metric .num { color: #0f172a !important; }
+      .hero-desc, .subcard p, .subcard li, .tier-list li, td, .section-sub { color: #334155 !important; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">GSG</div>
+      <div>
+        <div class="brand-title">Global Spirit Agency · B2B-Хаб Производителя</div>
+        <div class="brand-sub" id="topClientLabel">Проект: Масштабирование оптовых продаж обуви по РФ (Кавказ / Дагестан)</div>
+      </div>
+    </div>
+    <div class="top-actions">
+      <button class="btn" onclick="togglePersonalizer()">⚙️ Подставить бренд заказчика</button>
+      <button class="btn btn-cyan" onclick="showAllForPrint()">📄 Весь документ списком</button>
+      <button class="btn btn-gold" onclick="window.print()">🖨️ PDF / Печать КП</button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- Optional Personalizer -->
+  <section class="personalizer no-print" id="personalizerBox">
+    <div class="section-head">
+      <div>
+        <h3>Персонализация коммерческого предложения под фабрику заказчика</h3>
+        <p class="section-sub">Измените поля ниже — заголовки хаба, контакты и расчёт в КП обновятся автоматически.</p>
+      </div>
+      <button class="btn" onclick="togglePersonalizer()">Закрыть</button>
+    </div>
+    <div class="pers-grid">
+      <div class="field">
+        <label>Название фабрики / бренда клиента</label>
+        <input type="text" id="inFactoryName" value="Крупная обувная фабрика Кавказа" oninput="applyPersonalization()">
+      </div>
+      <div class="field">
+        <label>Город / Регион базы</label>
+        <input type="text" id="inRegion" value="Северный Кавказ / Дагестан" oninput="applyPersonalization()">
+      </div>
+      <div class="field">
+        <label>Ключевой ассортимент</label>
+        <input type="text" id="inAssortment" value="Мужская/повседневная кожаная обувь, кроссовки, берцы" oninput="applyPersonalization()">
+      </div>
+      <div class="field">
+        <label>Наше агентство / Контакт для КП</label>
+        <input type="text" id="inAgencyContact" value="Global Spirit Agency (Глобал Плюс) · @unityspiritpartners" oninput="applyPersonalization()">
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="eyebrow">Стратегический B2B-Хаб и Коммерческое Предложение · Ноябрь 2026</div>
+    <h1>Как <span id="heroFactory">крупному производителю обуви на Кавказе</span> забрать федеральный опт по России и СТМ для маркетплейсов</h1>
+    <p class="hero-desc" id="heroDesc">
+      Мы проанализировали рынок обувного производства Дагестана и СКФО, вскрыли реальные каналы сбыта 12+ конкурентов по России, сравнили прайсы digital-агентств Кавказа и собрали единую B2B-систему «под ключ» с оплатой за измеримый рост ваших оптовых отгрузок. Фокус ассортимента: <strong id="heroAssortment">Мужская/повседневная кожаная обувь, кроссовки, берцы</strong>.
+    </p>
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-val">261 фабрика</div>
+        <div class="kpi-lbl">официально в Дагестане (2-е место в РФ)</div>
+        <div class="kpi-src">АНО «ННЦК» / «Честный ЗНАК», 2 кв. 2025</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val cyan">220,5 млрд ₽</div>
+        <div class="kpi-lbl">онлайн-продажи обуви в РФ за 1П 2026</div>
+        <div class="kpi-src">ЦРПТ «Честный ЗНАК» / АКИТ</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val em">до 94% онлайна</div>
+        <div class="kpi-lbl">идёт через маркетплейсы (WB ~25% всего fashion)</div>
+        <div class="kpi-src">IBC Real Estate / Strategy Partners, 2025–2026</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val">1 200 – 4 500 ₽</div>
+        <div class="kpi-lbl">оптовый коридор за пару по Кавказу</div>
+        <div class="kpi-src">Коробами 6–8 пар; СТМ от 50–300 пар</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABS -->
+  <nav class="tabs-wrap no-print" id="tabsBar">
+    <button class="tab-btn active" data-tab="market" onclick="openTab('market')">1. Рынок и Конкуренты (Дагестан → РФ)</button>
+    <button class="tab-btn" data-tab="agencies" onclick="openTab('agencies')">2. Анализ агентств Кавказа («Такие как мы»)</button>
+    <button class="tab-btn" data-tab="system" onclick="openTab('system')">3. Что мы создаём + Демо B2B-Витрины</button>
+    <button class="tab-btn" data-tab="pricing" onclick="openTab('pricing')">4. Предложение, Цены и Калькулятор ROI</button>
+    <button class="tab-btn" data-tab="roadmap" onclick="openTab('roadmap')">5. План запуска (90 дней) и Гарантии</button>
+  </nav>
+
+  <!-- ==================== TAB 1: MARKET & COMPETITORS ==================== -->
+  <section class="tab-pane active" id="tab-market">
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>1.1. Как устроен рынок производства обуви в Дагестане и на Кавказе (2025–2026)</h2>
+          <p class="section-sub">Ключевые цифры отрасли и главный структурный сдвиг, который даёт преимущество именно крупной легальной фабрике.</p>
+        </div>
+        <span class="tag tag-gold">Разведка отрасли</span>
+      </div>
+
+      <div class="grid-3">
+        <div class="subcard">
+          <span class="tag tag-cyan">Масштаб кластера</span>
+          <h3>Топ-2 в России по числу производителей</h3>
+          <ul>
+            <li>В Дагестане во 2 кв. 2025 зарегистрирован <strong>261 официальный производитель</strong> (впереди только Москва), из них ~42 средних и крупных юрлица (Контур.Фокус) и сотни цехов/ИП.</li>
+            <li>Налоги обувной отрасли РД в 2024 г. выросли до <strong>124,7 млн ₽</strong> (против 113,5 млн ₽ в 2023 г.).</li>
+            <li>Кластер <strong>«Город обувщиков»</strong> (Махачкала, Каспийск, Буйнакск) с горизонтом до 2030 г. и заявленными инвестициями ~<strong>7 млрд ₽</strong> развивает локальное литьё подошв и супинаторов.</li>
+          </ul>
+        </div>
+        <div class="subcard">
+          <span class="tag tag-em">Главный тренд 2025–2026</span>
+          <h3>Обеление и кризис «серых» цехов</h3>
+          <ul>
+            <li>Роспотребнадзор и ЦРПТ («Честный ЗНАК») провели масштабные проверки: десятки фиктивных ИП исключены из маркировки, а Wildberries массово блокировал продавцов за подделки Adidas, Nike, Asics, Dr. Martens и отсутствие УПД.</li>
+            <li><strong>Окно для вашего завода:</strong> белые селлеры WB/Ozon и региональные сети в панике ищут <strong>надёжную крупную фабрику</strong> с реальным цехом, декларациями ЕАЭС и чистой передачей кодов «Честный ЗНАК».</li>
+          </ul>
+        </div>
+        <div class="subcard">
+          <span class="tag tag-rose">Смещение спроса в РФ</span>
+          <h3>Офлайн сжимается, маркетплейсы забирают сбыт</h3>
+          <ul>
+            <li>Весь fashion-рынок РФ достиг ~3,94–4,45 трлн ₽ в 2025 г., при этом традиционная обувная розница теряла 10–12%.</li>
+            <li>Доля онлайна в одежде и обуви — <strong>50–68%</strong>, из них до <strong>94%</strong> идёт через маркетплейсы (WB + Ozon).</li>
+            <li>Возвратность обуви на WB/Ozon достигает <strong>28–30%+</strong>: покупателям нужна стабильная колодка, натуральная кожа и точная размерная сетка — это сильная сторона фабричного Кавказа против дешёвого ноунейм-импорта.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="callout">
+        <h4>💡 Стратегический вывод №1: Почему нельзя продавать «по-старому»</h4>
+        <p>Пока мелкие цеха воюют ценой на «Садоводе» и в закрытых Telegram-чатах без документов, крупный производитель выигрывает за счёт <strong>прямого B2B-портала с УПД «Честный ЗНАК»</strong> и отдельного направления <strong>СТМ (контрактный пошив для селлеров WB/Ozon)</strong> — там выше чек (от 300–500 тыс. до 2+ млн ₽), регулярнее дозаказы и нет ценового демпинга перекупов.</p>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>1.2. Карта реальных конкурентов (Дагестан и соседи по СКФО)</h2>
+          <p class="section-sub">Отфильтруйте по региону или сегменту, чтобы увидеть их каналы сбыта и уязвимые места в маркетинге.</p>
+        </div>
+        <div class="filter-pills no-print" id="compFilters">
+          <button class="pill active" onclick="filterComp('all', this)">Все (12)</button>
+          <button class="pill" onclick="filterComp('dagestan', this)">Дагестан (8)</button>
+          <button class="pill" onclick="filterComp('skfo', this)">Соседи СКФО (4)</button>
+          <button class="pill" onclick="filterComp('special', this)">Берцы / Спецобувь</button>
+          <button class="pill" onclick="filterComp('casual', this)">Мужская / Повседневная</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="compTable">
+          <thead>
+            <tr>
+              <th>Фабрика / Бренд</th>
+              <th>Локация и масштаб</th>
+              <th>Ассортимент и цены опт</th>
+              <th>Как продают по России</th>
+              <th>Слабое место (Наша точка удара)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-tags="dagestan special">
+              <td><strong>ДОФ (dofshoes.ru)</strong><br><span class="tag tag-gold">Лидер тактики</span></td>
+              <td>Махачкала / Буйнакск. &gt;25 лет на рынке</td>
+              <td>Берцы, армейская, тактическая и уставная обувь, классика. Коридор ~1 600–4 500 ₽/пара</td>
+              <td>Сайт dofshoes.ru, госзаказы и силовые структуры, ВК (vk.com/dof.shoes), маркетплейсы WB и Ozon</td>
+              <td>Устаревший B2B-интерфейс под гос/силовой сегмент, слабая воронка под коммерческих селлеров WB и гражданский СТМ</td>
+            </tr>
+            <tr data-tags="dagestan special">
+              <td><strong>БОФФ (Буйнакск)</strong><br><span class="tag tag-cyan">Полный цикл</span></td>
+              <td>Буйнакск. Своё итальянское литьё подошв, сотни тыс. пар/год</td>
+              <td>Спецобувь, рабочие ботинки, берцы с литьевой подошвой</td>
+              <td>B2B-каталоги (OptList, «Фаворит»), прямые телефоны фабрики, дистрибьюторы спецодежды</td>
+              <td>Почти нулевая цифровая упаковка (нет своего сильного TMA/портала, контент-маркетинга и авто-воронки по регионам)</td>
+            </tr>
+            <tr data-tags="dagestan casual">
+              <td><strong>SERG (serg-obuv.ru)</strong><br><span class="tag tag-em">Эталон дистрибуции</span></td>
+              <td>Махачкала (ул. Мурсалова, 51). &gt;15 лет</td>
+              <td>Кожаная мужская и подростковая обувь: классика, кроссовки, кеды, берцы, зима</td>
+              <td>Собственные склады в Махачкале, Ростове-на-Дону и Москве; выставка MosShoes; опт по РФ и СНГ</td>
+              <td>Тяжёлая оффлайн-дистрибуция требует высоких издержек; нет автоматизированной AI-лидогенерации под мелкий/средний опт и СТМ</td>
+            </tr>
+            <tr data-tags="dagestan casual">
+              <td><strong>ARTMAN</strong><br><span class="tag tag-gold">Повседневный сегмент</span></td>
+              <td>Махачкала (ул. Мамедбекова, 68). Известная фабрика</td>
+              <td>Мужские/женские туфли, мокасины, кеды, ботинки, домашняя обувь. ~1 350–3 500 ₽</td>
+              <td>Агрегаторы («Фаворит», Productcenter), выставка MosShoes, отделы продаж по звонкам</td>
+              <td>Зависимость от сторонних каталогов-посредников; потеря байера на этапе «позвони и попроси прайс в Excel/PDF»</td>
+            </tr>
+            <tr data-tags="dagestan casual">
+              <td><strong>Maratti (maratti.ru)</strong></td>
+              <td>Махачкала (пр-т Акушинского)</td>
+              <td>Мужская кожаная обувь: туфли, ботинки, кроссовки</td>
+              <td>Собственный сайт, активные продажи на Wildberries и Ozon, оптовая группа ВКонтакте</td>
+              <td>Нет единого быстрого B2B-кабинета в Telegram и регулярного видео-контент-завода для привлечения региональных магазинов</td>
+            </tr>
+            <tr data-tags="dagestan casual">
+              <td><strong>Boksich (boksich.ru)</strong></td>
+              <td>Махачкала (ул. Дачная, 10). &gt;20 лет, ГОСТ</td>
+              <td>Мужская кожаная обувь (туфли, кроссовки, ботинки, сапоги)</td>
+              <td>Корпоративный сайт с заявкой на почту, региональные оптовики</td>
+              <td>Медленный цикл сделки через email/звонок; отсутствие омниканальной воронки (Авито + Директ + Telegram)</td>
+            </tr>
+            <tr data-tags="dagestan casual">
+              <td><strong>Gassa</strong></td>
+              <td>Цех в Махачкале, офис продаж в Москве</td>
+              <td>Мужские кожаные туфли, мокасины, кеды от ~1 500–1 600 ₽/пара</td>
+              <td>Productcenter, Платформа ФИС, VK-сообщество, московский оптовый офис</td>
+              <td>Узкая линейка в онлайне, слабая работа с Reels/Shorts и прямой охотой за селлерами маркетплейсов</td>
+            </tr>
+            <tr data-tags="dagestan casual">
+              <td><strong>Zain (zain.su) &amp; Дагобувь</strong></td>
+              <td>Махачкала (т/м «Ватан», пр. Акушинского, 18)</td>
+              <td>Всесезонная мужская обувь (39–45), отгрузка коробками по 6–8 пар</td>
+              <td>Склады в Махачкале и Москве (ТК «Садовод» / Тихорецкий б-р), Qoovee, Productcenter, TG-чаты</td>
+              <td>Привязка к рынку «Садовод» съедает маржу и доверие федеральных сетей; ручная переписка в мессенджерах</td>
+            </tr>
+            <tr data-tags="skfo casual">
+              <td><strong>BAS-SHOES &amp; Mastille</strong></td>
+              <td>Пятигорск (Ставропольский край). &gt;25 лет</td>
+              <td>Женская, мужская, детская, домашняя и спецобувь</td>
+              <td>Рынок «Лира» (Пятигорск), каталоги РФТекстиль/ПромЦентр, организаторы СП</td>
+              <td>Сильная привязка к южным оптовым базам; слабая федеральная performance-реклама за пределами ЮФО</td>
+            </tr>
+            <tr data-tags="skfo special">
+              <td><strong>СтавОбувь (Ставрополь)</strong></td>
+              <td>Ставрополь, с 2005 г.</td>
+              <td>Спецобувь и повседневные туфли (прямое литьё подошвы)</td>
+              <td>Прямые контракты, отраслевые порталы, B2B-тендеры</td>
+              <td>Классический производственный сайт без современной лидогенерации и автоматизации повторных закупок</td>
+            </tr>
+            <tr data-tags="skfo casual">
+              <td><strong>Кавказ-обувь (Невинномысск)</strong></td>
+              <td>Невинномысск, с 1998 г.</td>
+              <td>Детская, подростковая, школьная, профилактическая и зимняя обувь</td>
+              <td>Региональные розничные сети, B2B-каталоги, дистрибьюторы Юга и Центра РФ</td>
+              <td>Ограниченность нишей и слабая представленность в современном Telegram B2B-маркетинге</td>
+            </tr>
+            <tr data-tags="dagestan casual">
+              <td><strong>Серые цеха (Bumer и ноунейм-ТМ)</strong></td>
+              <td>Десятки малых цехов в Махачкале и Буйнакске</td>
+              <td>Дёшевые кроссовки и повседневка 900–1 800 ₽</td>
+              <td>Авито, «Садовод», ТЯК «Москва», закрытые TG-каналы, автобусы и ТК без УПД</td>
+              <td><strong>Критическая уязвимость:</strong> блокировки на WB/Ozon и штрафы за «Честный ЗНАК». Ваши белые отгрузки легко забирают их клиентов</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>1.3. Как именно конкуренты продают по России (6 рабочих каналов и их экономика)</h2>
+          <p class="section-sub">Реальные цифры CPL, чеков и логистики на обувном опте РФ (2025–2026).</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="subcard">
+          <h3>Традиционные каналы Дагестана (работают, но с потолком)</h3>
+          <ul>
+            <li><strong>Рынки «Садовод», ТЯК «Москва» (Люблино) и «Лира» (Пятигорск):</strong> отгрузка фурами и маршрутными автобусами, коробки по 6–8 пар (размерный ряд 39–44/45), 100% предоплата. Минус: посредники забирают 15–30% маржи, высокий риск смешивания с контрафактом.</li>
+            <li><strong>Telegram-каналы и WhatsApp-рассылки:</strong> видеообзоры из цеха, но заказ оформляется в хаосе переписок, нет остатков в реальном времени, менеджеры отвечают часами (теряется до 35% остывших байеров).</li>
+            <li><strong>B2B-агрегаторы (OptList, Supl.biz, Productcenter, Qoovee):</strong> дают дешёвый вход, но там байер сравнивает 20 фабрик «в лоб» только по минимальной цене за пару.</li>
+            <li><strong>Выставки MosShoes и Euro Shoes:</strong> стенд 6–50 кв. м обходится от сотен тысяч до нескольких миллионов рублей — без цифровой дожимной воронки контакты с выставки не доходят до второго заказа.</li>
+          </ul>
+        </div>
+        <div class="subcard">
+          <h3>Масштабируемые каналы B2B-роста (где кроется основной прирост)</h3>
+          <ul>
+            <li><strong>Авито Pro Опт:</strong> CPL <strong>500 – 3 000 ₽</strong>. Лучший старт для мелкого и среднего опта (чеки 30–300 тыс. ₽). Без умного бота-фильтра 60–70% заявок — розничные покупатели «на 1 пару».</li>
+            <li><strong>Яндекс.Директ (Поиск + РСЯ по РФ):</strong> CPL <strong>1 500 – 6 000 ₽</strong> (горячие запросы «кожаная обувь оптом от производителя», «берцы оптом»). Суммарная конверсия в сделку из SQL <strong>5–15%</strong>.</li>
+            <li><strong>СТМ (Private Label) под селлеров WB и Ozon:</strong> партии <strong>от 50–100 пар</strong> (готовые модели с вашим лого/стелькой) и <strong>от 300–500 пар</strong> (свои лекала). Чек <strong>300 тыс. – 2+ млн ₽</strong>, регулярные подсортировки на склады Коледино, Электросталь, Невинномысск.</li>
+            <li><strong>Прямой B2B-аутрич + Telegram-экосистема:</strong> выход напрямую на ЛПР мультибрендовых обувных сетей и топ-селлеров РФ минуя перекупщиков на рынках.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 2: AGENCIES ANALYSIS ==================== -->
+  <section class="tab-pane" id="tab-agencies">
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>2. Полный анализ «таких как мы» на Кавказе (Дагестан, СКФО, ЮФО) и в РФ</h2>
+          <p class="section-sub">Кто предлагает похожие услуги на вашем рынке, сколько они берут и почему стандартные подрядчики не решают задачу оптового производителя.</p>
+        </div>
+        <span class="tag tag-cyan">Аудит конкурентов-подрядчиков</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Категория и игроки</th>
+              <th>География</th>
+              <th>Что предлагают и сколько стоит на рынке</th>
+              <th>Сильные стороны</th>
+              <th>Критичные пробелы для оптовой фабрики</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Локальные студии Махачкалы и Дербента</strong><br>WebAM, Surha, Digital05, частные команды</td>
+              <td>Махачкала, Дербент (РД)</td>
+              <td>• Сайт-визитка: 7–35 тыс. ₽<br>• Магазин: от 50 тыс. ₽<br>• Директ/SEO: 15–30 тыс. ₽/мес<br>• Базовая CRM: 15–50 тыс. ₽</td>
+              <td>Низкий порог входа, личные встречи в Махачкале, знание местного менталитета</td>
+              <td>Делают шаблонные сайты без 1С/МойСклад, ростовок 6–8 пар и УПД; нет AI-квалификатора, СТМ-упаковки и федерального B2B-аутрича</td>
+            </tr>
+            <tr>
+              <td><strong>Рекламно-корпоративные агентства РД</strong><br>Labus.pro, Tecama</td>
+              <td>Махачкала (филиалы ЮФО)</td>
+              <td>• Наружка, полиграфия, брендинг, корпоративные порталы (Tecama на UniversalCMS), Битрикс24, Директ — 50–150+ тыс. ₽ за проект</td>
+              <td>Опыт с 2000–2009 гг., закрывают офлайн-брендинг и гос/корпоративный веб</td>
+              <td>Фокус на полиграфию/корпоративные сайты, а не на агрессивную B2B-лидогенерацию на рынки всей России, TMA и контент-завод Reels</td>
+            </tr>
+            <tr>
+              <td><strong>Студии КМВ, Ставрополя и Грозного</strong><br>Региональные веб/SMM-агентства + «псевдо-местные» сетки</td>
+              <td>Пятигорск, Ставрополь, Грозный</td>
+              <td>• Лендинг: 30–105 тыс. ₽<br>• Каталог с 1С: 200–500 тыс. ₽<br>• CRM: 50–300 тыс. ₽<br>• ТГ-бот: 35–150 тыс. ₽<br>• Директ/SMM: 30–70 тыс. ₽/мес</td>
+              <td>Развитый рынок услуг, понимание локальной торговли и геомаркетинга</td>
+              <td>Часто продают разрозненные услуги; по отзывам рынка часть «местных» сайтов — лидогенераторы московских/ростовских сеток с передачей джуниорам</td>
+            </tr>
+            <tr>
+              <td><strong>Крупные южные и федеральные агентства</strong><br>ART6 (Краснодар), федеральные B2B-студии</td>
+              <td>Краснодар, Москва, вся РФ</td>
+              <td>• Сайт/портал: 90–250+ тыс. ₽<br>• B2B TMA + 1С/Битрикс24: <strong>350–700 тыс. ₽</strong> (2–3 мес)<br>• Комплексный B2B-маркетинг: <strong>100–150+ тыс. ₽/мес</strong></td>
+              <td>Сильный SEO, глубокая веб-аналитика, системный performance-маркетинг</td>
+              <td><strong>Очень дорого и долго (3–6 мес)</strong>; при заказе «портал + CRM + трафик + видео» чек легко уходит за 800 тыс.–1,2 млн ₽; нет знаний по обувным ростовкам и СТМ</td>
+            </tr>
+            <tr class="highlight-row">
+              <td><strong>Мы: Global Spirit Agency (Глобал Плюс)</strong><br><span class="tag tag-gold">AI-ускоренный B2B-интегратор</span></td>
+              <td>СКФО / Удалённая работа по всей РФ и СНГ</td>
+              <td>• Система 360° под ключ: <strong>149–290 тыс. ₽</strong> (запуск 14–45 дней)<br>• Рост + процент от отгрузок: <strong>от 35–85 тыс. ₽/мес + 2–3% от прироста опта</strong></td>
+              <td>Готовая TMA-платформа, AI-контент-завод, B2B-разведка ЛПР, интеграция 1С/МойСклад + «Честный ЗНАК», оплата за результат</td>
+              <td>Не делаем «сайт ради сайта» и не берём клиентов без минимально готового прайса и образцов для отгрузок по РФ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="grid-2">
+        <div class="subcard">
+          <h3>Почему у фабрик «сгорают» 150–300 тыс. ₽ у обычных агентств СКФО</h3>
+          <ol style="padding-left:18px; display:flex; flex-direction:column; gap:6px; font-size:0.84rem; color:#cbd5e1;">
+            <li><strong>Разрыв стыков:</strong> сайт делает один фрилансер, рекламу — другой, CRM — никто. Менеджер перезванивает через сутки — оптовик уже заказал на «Садоводе».</li>
+            <li><strong>Трафик без отсева розницы:</strong> Авито и Директ приносят звонки «сколько стоят 1 пара 42 размера?», отдел продаж тонет в мусоре и выключает рекламу.</li>
+            <li><strong>Нет понимания обувного бизнеса:</strong> агентства не строят калькулятор ростовок (6–8 пар), не выделяют УПД «Честный ЗНАК» в главный оффер и игнорируют СТМ для селлеров WB/Ozon.</li>
+            <li><strong>Нет живого видео с производства:</strong> у байеров из Сибири и Москвы нет доверия к фото из каталога 2019 года — нужны регулярные видео-доказательства качества кожи и швов.</li>
+          </ol>
+        </div>
+        <div class="subcard">
+          <h3>Сравнение ценности и стоимости сборки полной системы (РФ/СКФО vs Мы)</h3>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:4px;">
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:0.81rem;">
+                <span>Сборка по кускам у федеральных студий (Портал 1С + CRM + Трафик + Контент)</span>
+                <strong style="color:var(--rose);">650 000 – 1 100 000 ₽ · 3–5 мес</strong>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:94%; background:var(--rose);"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:0.81rem;">
+                <span>Региональные студии СКФО (Сайт + CRM + Реклама без TMA/AI/СТМ)</span>
+                <strong style="color:var(--amber);">220 000 – 450 000 ₽ · 2–3 мес</strong>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:55%; background:var(--amber);"></div></div>
+            </div>
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:0.81rem;">
+                <span>Наша «Оптовая Система 360°» под ключ (TMA + 1С + AI + Контент + Трафик)</span>
+                <strong style="color:var(--emerald);">290 000 ₽ · 30–45 дней</strong>
+              </div>
+              <div class="bar-track"><div class="bar-fill" style="width:36%;"></div></div>
+            </div>
+          </div>
+          <p style="margin-top:8px; color:#94a3b8;">За счёт готовых модулей <em>Open V3 TMA</em>, AI-конвейера видео и автоматизированного B2B-аутрича мы даём функционал уровня столичной разработки в 2–2,5 раза быстрее и дешевле.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 3: OUR SYSTEM & LIVE TMA DEMO ==================== -->
+  <section class="tab-pane" id="tab-system">
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>3.1. Архитектура «Оптовая Система 360°» — что мы создадим для вашей фабрики</h2>
+          <p class="section-sub">Нажмите на любой из 6 модулей, чтобы раскрыть состав работ, технологии и ожидаемый эффект.</p>
+        </div>
+        <span class="tag tag-em">6 связанных узлов роста</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="module-card open" onclick="toggleModule(this)">
+          <div class="module-top">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="module-num">1</span>
+              <div>
+                <strong>B2B-Портал + Telegram Mini App «Оптовая витрина»</strong>
+                <div style="font-size:0.76rem; color:var(--muted);">Открытие за 0.3 сек · Заказ коробами/ростовками · 1С / МойСклад</div>
+              </div>
+            </div>
+            <span class="tag tag-cyan">Ядро сбыта</span>
+          </div>
+          <div class="module-body">
+            Вместо утомительной пересылки PDF-файлов оптовик открывает вашу фирменную витрину прямо в Telegram или на сайте: видит <strong>актуальные остатки из 1С/МойСклад</strong>, персональную колонку цен (мелкий/крупный опт), выбирает коробки по 6–8 пар (с разбивкой размеров 39–45), видит отметку <strong>«Честный ЗНАК + УПД по ЭДО»</strong> и за 2 клика получает счёт и резерв.
+          </div>
+        </div>
+
+        <div class="module-card" onclick="toggleModule(this)">
+          <div class="module-top">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="module-num">2</span>
+              <div>
+                <strong>Отдельная воронка «СТМ под ключ для селлеров WB и Ozon»</strong>
+                <div style="font-size:0.76rem; color:var(--muted);">Партии от 50–100 и 300–500 пар · Брендинг и отгрузка на FBO</div>
+              </div>
+            </div>
+            <span class="tag tag-gold">Высокий чек</span>
+          </div>
+          <div class="module-body">
+            Выводим ваш завод как надёжного контрактного производителя №1 на Кавказе для селлеров маркетплейсов: калькулятор себестоимости СТМ, готовые пакеты «брендированная стелька + коробка + бирка + коды DataMatrix + доставка на Коледино/Электросталь/Невинномысск». Это даёт заказы по <strong>500 тыс. – 2 млн ₽</strong> с регулярными повторами.
+          </div>
+        </div>
+
+        <div class="module-card" onclick="toggleModule(this)">
+          <div class="module-top">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="module-num">3</span>
+              <div>
+                <strong>Омниканальная B2B-лидогенерация по всей России</strong>
+                <div style="font-size:0.76rem; color:var(--muted);">Яндекс.Директ РФ + Авито Pro Опт + Telegram + Прямой аутрич</div>
+              </div>
+            </div>
+            <span class="tag tag-em">Поток байеров</span>
+          </div>
+          <div class="module-body">
+            Запускаем 4 управляемых потока заявок: (1) Яндекс.Директ на горячий спрос по ЦФО, Уралу, Сибири и Поволжью; (2) Авито Pro с автопереводом в Telegram-бот фильтра; (3) посевы и Telegram Ads по каналам байеров и селлеров; (4) точечный AI-аутрич по собранной базе 3 000+ обувных магазинов РФ и продавцов обуви на WB/Ozon.
+          </div>
+        </div>
+
+        <div class="module-card" onclick="toggleModule(this)">
+          <div class="module-top">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="module-num">4</span>
+              <div>
+                <strong>Контент-Завод «Лицо Фабрики» (30–75 Reels / Shorts / TG в мес)</strong>
+                <div style="font-size:0.76rem; color:var(--muted);">Снимаете 1 час на телефон в цеху — мы делаем 30–75 роликов</div>
+              </div>
+            </div>
+            <span class="tag tag-gold">Доверие РФ</span>
+          </div>
+          <div class="module-body">
+            Чтобы у вас покупали без поездки в Махачкалу, байер должен видеть масштаб цеха и качество кожи. Мы даём чёткие сценарии съёмки (краш-тесты подошвы, сгибание кожи, обзор новой колодки, процесс прошивки и отгрузки фурами), монтируем 30–75 вертикальных роликов в месяц с субтитрами, AI-озвучкой/аватарами и переливаем зрителей в B2B-каталог.
+          </div>
+        </div>
+
+        <div class="module-card" onclick="toggleModule(this)">
+          <div class="module-top">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="module-num">5</span>
+              <div>
+                <strong>CRM (Битрикс24/amoCRM) + AI-Квалификатор 24/7 + Реактивация</strong>
+                <div style="font-size:0.76rem; color:var(--muted);">Отсев розницы по ИНН за 30 сек · Возврат до 35% спящей базы</div>
+              </div>
+            </div>
+            <span class="tag tag-cyan">Анти-потери</span>
+          </div>
+          <div class="module-body">
+            Ночной или дневной лид мгновенно обрабатывается AI-ассистентом на базе знаний вашей фабрики: проверяет город, ИНН/формат (магазин, сеть, селлер WB, СП), подбирает прайс под нужный объём и передаёт менеджеру уже прогретого оптовика. Плюс авто-цепочка напоминаний «докупить ходовые размеры» перед новым сезоном.
+          </div>
+        </div>
+
+        <div class="module-card" onclick="toggleModule(this)">
+          <div class="module-top">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="module-num">6</span>
+              <div>
+                <strong>Сквозная аналитика и Дашборд собственника в Telegram</strong>
+                <div style="font-size:0.76rem; color:var(--muted);">Прозрачность каждого рубля и учёт отгрузок для % оплаты</div>
+              </div>
+            </div>
+            <span class="tag tag-em">Контроль 24/7</span>
+          </div>
+          <div class="module-body">
+            Каждое утро собственник видит сводку: сколько пришло B2B-заявок с Директа/Авито/TG, сколько отсеяно розницы, сколько выставлено счетов, какая выручка по новым оптовикам и по СТМ. Это делает прозрачным как контроль отдела продаж, так и расчёт процента за прирост продаж.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIVE INTERACTIVE B2B TMA SIMULATOR -->
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>3.2. Интерактивный прототип: как ваш оптовик будет делать заказ в Telegram Mini App</h2>
+          <p class="section-sub">Попробуйте покликать прямо сейчас — именно так выглядит B2B-витрина фабрики в смартфоне байера из Москвы, Казани или Екатеринбурга.</p>
+        </div>
+        <span class="tag tag-gold">Живое демо для заказчика</span>
+      </div>
+
+      <div class="tma-shell">
+        <div class="tma-header">
+          <div>
+            <div style="font-weight:900; font-size:0.95rem;" id="tmaBrandName">🏭 Оптовый B2B-Портал · Крупная обувная фабрика Кавказа</div>
+            <div style="font-size:0.75rem; color:var(--emerald);">● 1С Остатки синхронизированы · Честный ЗНАК (УПД / ЭДО) · Отгрузка 24ч</div>
+          </div>
+          <div class="filter-pills">
+            <button class="pill active" id="modeOptBtn" onclick="setTmaMode('opt')">Опт коробами (фабричный бренд)</button>
+            <button class="pill" id="modeStmBtn" onclick="setTmaMode('stm')">Пошив под СТМ (селлерам WB/Ozon)</button>
+          </div>
+        </div>
+
+        <div class="tma-sku-list" id="tmaSkuList">
+          <div class="tma-sku selected" onclick="selectSku(this, 'Лоферы/Туфли мужские (натур. кожа)', 1850, 8, '39(1)-40(1)-41(2)-42(2)-43(1)-44(1)')">
+            <span class="tag tag-gold">Хит продаж · Натур. кожа</span>
+            <h4 style="margin:6px 0 3px; font-size:0.9rem;">Лоферы мужские классика</h4>
+            <div style="font-size:0.8rem; color:#cbd5e1;">Опт: <strong>1 850 ₽ / пара</strong></div>
+            <div style="font-size:0.74rem; color:var(--muted);">Короб: 8 пар · 14 800 ₽/короб</div>
+          </div>
+          <div class="tma-sku" onclick="selectSku(this, 'Кроссовки повседневные (кожа + ТЭП)', 1650, 8, '40(1)-41(2)-42(2)-43(2)-44(1)')">
+            <span class="tag tag-cyan">Масс-маркет РФ</span>
+            <h4 style="margin:6px 0 3px; font-size:0.9rem;">Кроссовки городские кожа</h4>
+            <div style="font-size:0.8rem; color:#cbd5e1;">Опт: <strong>1 650 ₽ / пара</strong></div>
+            <div style="font-size:0.74rem; color:var(--muted);">Короб: 8 пар · 13 200 ₽/короб</div>
+          </div>
+          <div class="tma-sku" onclick="selectSku(this, 'Берцы тактические / зима (юфть + мех)', 2650, 6, '40(1)-41(1)-42(2)-43(1)-44(1)')">
+            <span class="tag tag-em">ГОСТ · Высокая маржа</span>
+            <h4 style="margin:6px 0 3px; font-size:0.9rem;">Берцы тактические зима</h4>
+            <div style="font-size:0.8rem; color:#cbd5e1;">Опт: <strong>2 650 ₽ / пара</strong></div>
+            <div style="font-size:0.74rem; color:var(--muted);">Короб: 6 пар · 15 900 ₽/короб</div>
+          </div>
+        </div>
+
+        <div class="tma-summary">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="font-size:0.76rem; color:var(--muted);">Выбрана позиция:</div>
+              <strong id="tmaSelectedName">Лоферы/Туфли мужские (натур. кожа)</strong>
+              <div style="font-size:0.75rem; color:#7dd3fc;" id="tmaSizes">Ростовка: 39(1)-40(1)-41(2)-42(2)-43(1)-44(1)</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <label style="font-size:0.8rem; color:var(--muted);" id="tmaQtyLabel">Коробов:</label>
+              <input type="number" id="tmaBoxes" value="10" min="1" max="500" oninput="updateTmaCalc()" style="width:82px; background:#090d16; border:1px solid var(--border); color:#fff; border-radius:8px; padding:6px 8px; font-weight:800;">
+              <select id="tmaTk" onchange="updateTmaCalc()" style="background:#090d16; border:1px solid var(--border); color:#fff; border-radius:8px; padding:6px 9px; font-size:0.8rem;">
+                <option value="ПЭК / Деловые Линии (по РФ)">ТК ПЭК / Деловые Линии</option>
+                <option value="Склад WB Коледино / Электросталь">Фулфилмент / FBO WB</option>
+                <option value="Склад Невинномысск / Юг">Склад Невинномысск (Юг)</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding-top:8px; border-top:1px solid var(--border);">
+            <div>
+              <div style="font-size:1.15rem; font-weight:900; color:var(--emerald);" id="tmaTotalText">Итого: 80 пар · 148 000 ₽</div>
+              <div style="font-size:0.75rem; color:var(--muted);" id="tmaSubNote">Включено: передача кодов «Честный ЗНАК» по УПД + декларация соответствия ЕАЭС</div>
+            </div>
+            <button class="btn btn-gold" onclick="simulateTmaOrder()">⚡ Сформировать счёт и отправить в CRM</button>
+          </div>
+          <div id="tmaOrderFeedback" style="display:none; font-size:0.8rem; color:#86efac; background:rgba(34,197,94,0.12); padding:8px 10px; border-radius:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 4: PRICING & ROI CALCULATOR ==================== -->
+  <section class="tab-pane" id="tab-pricing">
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>4.1. Коммерческое предложение: сколько стоит и как привязано к росту ваших продаж</h2>
+          <p class="section-sub">Переключите режим оплаты, чтобы сравнить классический фикс и партнёрскую модель «База + % от роста отгрузок».</p>
+        </div>
+        <div class="filter-pills no-print">
+          <button class="pill active" id="payHybridBtn" onclick="setPayModel('hybrid')">🔥 Модель «Рост за %» (База + Success Fee)</button>
+          <button class="pill" id="payFixedBtn" onclick="setPayModel('fixed')">💼 Классический Фикс (без %)</button>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <h4>🛡️ Безопасный старт — Тест-драйв за 7 дней: 45 000 ₽ (100% в зачёт пакета)</h4>
+        <p>Перед тем как вкладываться в полную систему, мы за 7 дней проводим аудит вашего прайса и отдела продаж, собираем работающий прототип Telegram-витрины на ваших 10–15 топ-моделях и даём карту потенциальных байеров/селлеров под ваш ассортимент. При переходе на любой пакет эти 45 000 ₽ вычитаются из стоимости запуска.</p>
+      </div>
+
+      <div class="grid-3">
+        <!-- TIER 1 -->
+        <div class="tier-card">
+          <div>
+            <span class="tag tag-cyan">Пакет 1 · 14–21 день</span>
+            <h3 style="margin:8px 0 6px; font-size:1.1rem;">«Оптовый Старт РФ»</h3>
+            <div class="tier-price">149 000 ₽ <span style="font-size:0.8rem; font-weight:600; color:var(--muted);">запуск</span></div>
+            <div class="tier-subprice" data-hybrid="+ 35 000 ₽/мес + 3% с новых оптовых отгрузок" data-fixed="+ 55 000 ₽/мес (без процента с оборота)">+ 35 000 ₽/мес + 3% с новых оптовых отгрузок</div>
+            <p style="font-size:0.8rem; color:var(--muted); margin:8px 0 12px;">Для быстрого выхода в федеральный онлайн-опт и проверки связки «реклама → квалифицированный байер».</p>
+            <ul class="tier-list">
+              <li>Упаковка оптового прайса, УТП и коммерческого предложения фабрики</li>
+              <li>Конверсионный B2B-лендинг (сбор заявок на прайс/образцы)</li>
+              <li>Telegram-бот фильтрации байеров (отсев розницы по ИНН/объёму)</li>
+              <li>Настройка и ведение Авито Pro Опт + Яндекс.Директ (Поиск/РСЯ по РФ)</li>
+              <li>Базовая настройка CRM (Битрикс24 / amoCRM) + регламент РОПа</li>
+            </ul>
+          </div>
+          <div style="font-size:0.76rem; color:var(--dim); border-top:1px solid var(--border); padding-top:10px;">
+            Рекламный бюджет (напрямую в площадки): от 60 000 – 90 000 ₽/мес
+          </div>
+        </div>
+
+        <!-- TIER 2 FEATURED -->
+        <div class="tier-card featured">
+          <div>
+            <span class="tag tag-gold">★ Рекомендуемый выбор · 30–45 дней</span>
+            <h3 style="margin:8px 0 6px; font-size:1.15rem;">«Оптовая Система 360°»</h3>
+            <div class="tier-price">290 000 ₽ <span style="font-size:0.8rem; font-weight:600; color:var(--muted);">под ключ (50/50)</span></div>
+            <div class="tier-subprice" data-hybrid="+ 85 000 ₽/мес + 2,5% от прироста опта и СТМ" data-fixed="+ 115 000 ₽/мес (без процента с оборота)">+ 85 000 ₽/мес + 2,5% от прироста опта и СТМ</div>
+            <p style="font-size:0.8rem; color:#cbd5e1; margin:8px 0 12px;">Полноценная цифровая машина продаж по всей России: свой B2B-портал в Telegram, поток СТМ-заказов WB/Ozon, видео-завод и AI-отдел квалификации.</p>
+            <ul class="tier-list">
+              <li>Всё из пакета «Оптовый Старт РФ»</li>
+              <li><strong>Telegram Mini App + B2B-портал</strong> (короба 6–8 пар, личные цены, интеграция с 1С/МойСклад, статус «Честный ЗНАК»)</li>
+              <li><strong>Отдельная СТМ-воронка</strong> для селлеров Wildberries и Ozon</li>
+              <li><strong>Контент-завод: 30 Reels / Shorts / TG-видео в месяц</strong> с производства и тестов качества</li>
+              <li><strong>AI-консультант 24/7 + авто-реактивация базы</strong> (возврат спящих байеров)</li>
+              <li>4 канала трафика: Яндекс.Директ + Авито Pro + Telegram + Прямой B2B-аутрич по базам РФ</li>
+              <li>Ежедневный дашборд выручки и лидов для собственника в Telegram</li>
+            </ul>
+          </div>
+          <div style="font-size:0.76rem; color:var(--gold); border-top:1px solid var(--border-strong); padding-top:10px;">
+            Рыночная цена при раздельном заказе в РФ: 550 000 – 850 000 ₽ · Ваша экономия от 260 000 ₽
+          </div>
+        </div>
+
+        <!-- TIER 3 -->
+        <div class="tier-card">
+          <div>
+            <span class="tag tag-em">Пакет 3 · Партнёрство и СНГ</span>
+            <h3 style="margin:8px 0 6px; font-size:1.1rem;">«Федеральная Экспансия»</h3>
+            <div class="tier-price">490 000 ₽ <span style="font-size:0.8rem; font-weight:600; color:var(--muted);">поэтапно</span></div>
+            <div class="tier-subprice" data-hybrid="+ 120 000 ₽/мес + 2% от новых контрактов РФ/ЕАЭС" data-fixed="+ 165 000 ₽/мес (без процента с оборота)">+ 120 000 ₽/мес + 2% от новых контрактов РФ/ЕАЭС</div>
+            <p style="font-size:0.8rem; color:var(--muted); margin:8px 0 12px;">Для фабрик от 10 000+ пар/мес, выходящих на федеральные сети, выставки MosShoes и рынки ЕАЭС (Казахстан, Беларусь).</p>
+            <ul class="tier-list">
+              <li>Всё из «Оптовой Системы 360°»</li>
+              <li><strong>Контент-завод Pro: до 75 роликов/мес</strong> + AI-дубляж/субтитры на рынки СНГ</li>
+              <li>Упаковка и вывод на B2B-площадки: <strong>Ozon B2B, OptList, Supl.biz, Productcenter</strong></li>
+              <li>Цифровая воронка под выставки <strong>MosShoes / Euro Shoes</strong> (сбор встреч до и дожим после)</li>
+              <li>Сложная интеграция мультискладов (Махачкала + Москва/Ростов) и 1С:ERP</li>
+              <li>Выделенный B2B-стратег и еженедельные разборы звонков отдела продаж</li>
+            </ul>
+          </div>
+          <div style="font-size:0.76rem; color:var(--dim); border-top:1px solid var(--border); padding-top:10px;">
+            Рекомендуемый рекламный бюджет: от 180 000 ₽/мес (поэтапное масштабирование с ROI)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INTERACTIVE ROI CALCULATOR -->
+    <div class="calc-box">
+      <div class="section-head" style="margin-bottom:12px;">
+        <div>
+          <h2>4.2. Интерактивный калькулятор окупаемости (ROI) и стоимости для вашей фабрики</h2>
+          <p class="section-sub">Двигайте ползунки под ваши реальные цифры — система автоматически посчитает выгоду и вознаграждение при росте продаж.</p>
+        </div>
+        <span class="tag tag-em">Живая финансовая модель</span>
+      </div>
+
+      <div class="grid-2">
+        <div>
+          <div class="range-row">
+            <div class="range-head"><span>Пакет внедрения и модель работы</span><span id="lblPkg">Система 360° (290 тыс + 85 тыс + 2,5%)</span></div>
+            <select id="calcPkg" onchange="recalcROI()" style="background:#090d16; border:1px solid var(--border); color:#fff; border-radius:9px; padding:8px 10px; font-size:0.84rem;">
+              <option value="start">Старт РФ (149 тыс. запуск + 35 тыс./мес + 3% с новых отгрузок)</option>
+              <option value="system360" selected>Система 360° (290 тыс. запуск + 85 тыс./мес + 2,5% с прироста)</option>
+              <option value="expansion">Федеральная Экспансия (490 тыс. запуск + 120 тыс./мес + 2% с прироста)</option>
+            </select>
+          </div>
+          <div class="range-row">
+            <div class="range-head"><span>Средний чек нового оптового заказа (₽)</span><span id="lblAvgCheck">220 000 ₽</span></div>
+            <input type="range" id="rngCheck" min="60000" max="1000000" step="20000" value="220000" oninput="recalcROI()">
+          </div>
+          <div class="range-row">
+            <div class="range-head"><span>Новых оптовых / СТМ клиентов в месяц через систему</span><span id="lblNewClients">8 клиентов</span></div>
+            <input type="range" id="rngClients" min="2" max="30" step="1" value="8" oninput="recalcROI()">
+          </div>
+          <div class="range-row">
+            <div class="range-head"><span>Среднее число повторных заказов за 6 мес (LTV-множитель)</span><span id="lblRepeat">2.2x</span></div>
+            <input type="range" id="rngRepeat" min="1" max="5" step="0.2" value="2.2" oninput="recalcROI()">
+          </div>
+          <div class="range-row">
+            <div class="range-head"><span>Чистая маржинальность производства (%)</span><span id="lblMargin">24%</span></div>
+            <input type="range" id="rngMargin" min="12" max="45" step="1" value="24" oninput="recalcROI()">
+          </div>
+          <div class="range-row">
+            <div class="range-head"><span>Месячный рекламный бюджет (Директ + Авито + TG)</span><span id="lblAdBudget">100 000 ₽</span></div>
+            <input type="range" id="rngBudget" min="50000" max="350000" step="10000" value="100000" oninput="recalcROI()">
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+          <div class="calc-result-grid">
+            <div class="calc-metric">
+              <div class="num" id="resMonthlyRev">1 760 000 ₽</div>
+              <div class="lbl">Доп. оптовая выручка в мес (с новых клиентов)</div>
+            </div>
+            <div class="calc-metric">
+              <div class="num" style="color:var(--cyan);" id="resRev6m">16 896 000 ₽</div>
+              <div class="lbl">Кумулятивный прирост выручки за 6 мес (с повторами)</div>
+            </div>
+            <div class="calc-metric">
+              <div class="num" style="color:var(--gold);" id="resAgencyCost">155 400 ₽/мес</div>
+              <div class="lbl">Среднее вознаграждение агентства (Фикс + 2,5% за рост)</div>
+            </div>
+            <div class="calc-metric">
+              <div class="num" style="color:var(--emerald);" id="resNetProfit6m">+2 232 640 ₽</div>
+              <div class="lbl">Чистая доп. прибыль фабрики за 6 мес (после всех затрат)</div>
+            </div>
+            <div class="calc-metric">
+              <div class="num" id="resPayback">~45 дней</div>
+              <div class="lbl">Окупаемость внедрения (по темпу первых отгрузок)</div>
+            </div>
+            <div class="calc-metric">
+              <div class="num" style="color:var(--gold);" id="resRoiPct">123%</div>
+              <div class="lbl">ROMI / Чистый возврат инвестиций за 6 мес</div>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:4px;">
+            <h4>Принцип честного партнёрства («Оплата за увеличение продаж»)</h4>
+            <p id="resExplain">При такой модели вы не рискуете переплачивать за воздух: основная часть дохода агентства привязана к реально оплаченным и отгруженным новым B2B-заказам в вашей CRM/1С. Всего 1–2 средних оптовых покупателя или 1 СТМ-контракт полностью окупают запуск системы.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== TAB 5: ROADMAP & GUARANTEES ==================== -->
+  <section class="tab-pane" id="tab-roadmap">
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>5.1. Как мы будем это осуществлять: дорожная карта на 90 дней</h2>
+          <p class="section-sub">Минимум отвлечения собственника от производства — 90% технической, контентной и маркетинговой работы берёт на себя наша команда.</p>
+        </div>
+        <span class="tag tag-gold">Пошаговое исполнение</span>
+      </div>
+
+      <div class="timeline">
+        <div class="phase">
+          <div class="phase-time">Неделя 1–2 · Фундамент</div>
+          <h4>Аудит, упаковка прайса и CRM</h4>
+          <ul>
+            <li>Интервью с собственником/РОПом (40 мин), разбор маржинальных моделей и остатков.</li>
+            <li>Сборка 3 типов оптовых прайсов (мелкий/крупный опт, СТМ для WB/Ozon) и отработка блока «Честный ЗНАК».</li>
+            <li>Развёртывание Битрикс24/amoCRM, настройка воронок «Заявка → Квалификация → Образцы → Отгрузка».</li>
+            <li>Выдача техзадания на 1-ю съёмку цеха на смартфон (1 час работы на фабрике).</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-time">Неделя 3–4 · Инфраструктура</div>
+          <h4>Запуск B2B-витрины, TMA и Контент-завода</h4>
+          <ul>
+            <li>Запуск B2B-лендинга + Telegram Mini App с коробами 6–8 пар и синхронизацией 1С/МойСклад.</li>
+            <li>Настройка AI-ассистента квалификации байеров (отсев розницы, сбор ИНН/региона).</li>
+            <li>Монтаж первых 15–30 Reels/Shorts/TG-видео с обзорами кожи, колодки и отгрузок.</li>
+            <li>Упаковка и запуск профессионального оптового аккаунта Авито Pro.</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-time">Месяц 2 · Масштабирование РФ</div>
+          <h4>Трафик, Прямой B2B-аутрич и СТМ</h4>
+          <ul>
+            <li>Запуск Яндекс.Директ (Поиск + РСЯ) на регионы с высоким спросом: ЦФО, Урал, Сибирь, Поволжье.</li>
+            <li>Прямой аутрич по базе 3 000+ розничных магазинов обуви и топ-селлеров WB/Ozon.</li>
+            <li>Посевы и таргет в Telegram-каналах байеров и поставщиков маркетплейсов.</li>
+            <li>Прослушивание звонков ОП и корректировка скриптов для поднятия конверсии SQL→Сделка до 10–15%.</li>
+          </ul>
+        </div>
+
+        <div class="phase">
+          <div class="phase-time">Месяц 3 · Системная машина</div>
+          <h4>Оптимизация ROI и повторные закупки</h4>
+          <ul>
+            <li>Отключение неэффективных ключей, масштабирование связок с лучшим CPL и средним чеком.</li>
+            <li>Запуск триггерной реактивации по базе (дозаказы ходовых моделей и предзаказ следующего сезона).</li>
+            <li>Регистрация и упаковка витрин на B2B-порталах (Ozon B2B, OptList, Supl.biz).</li>
+            <li>Фиксация планового прироста выручки, подготовка к отраслевой экспансии / выставкам.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-head">
+        <div>
+          <h2>5.2. Гарантии, разделение ответственности и ответы на главные вопросы</h2>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="subcard">
+          <span class="tag tag-em">Наши гарантии и защита бизнеса клиента</span>
+          <ul>
+            <li><strong>Финансовая прозрачность:</strong> рекламные кабинеты (Яндекс, Авито, TG Ads) оформляются напрямую на ваше юрлицо/ИП — вы видите каждую копейку расхода.</li>
+            <li><strong>Честный трекинг процента:</strong> все лиды из нашей воронки автоматически помечаются UTM/источником в вашей CRM — % платится <em>только</em> с реально поступивших денег по новым или реактивированным оптовым клиентам.</li>
+            <li><strong>Соблюдение сроков:</strong> поэтапная оплата запуска (50% старт / 50% после приёмки B2B-витрины и запуска трафика).</li>
+            <li><strong>Конфиденциальность базы:</strong> ваши лекала, себестоимость, база действующих оптовиков и данные 1С защищены NDA и не передаются в публичные облака.</li>
+          </ul>
+        </div>
+        <div class="subcard">
+          <span class="tag tag-gold">Что нужно от фабрики для старта (минимум усилий)</span>
+          <ul>
+            <li>Выделить 1 ответственного менеджера/РОПа на приём уже отфильтрованных целевых заявок и расчёт доставки ТК.</li>
+            <li>Предоставить актуальный ассортимент (15–50 топ-моделей для первого релиза), оптовые цены и размерные сетки.</li>
+            <li>Подтвердить легальность работы (УПД / «Честный ЗНАК» / декларации ЕАЭС — это наш главный козырь в рекламе по РФ!).</li>
+            <li>Раз в 2 недели выделять 45–60 минут на фабрике, чтобы отснять на телефон новые пары и погрузку коробок по нашему чек-листу.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <details class="faq" open>
+          <summary>Мы уже отгружаем через рынок (Садовод / Пятигорск) и сарафанное радио — зачем нам эта система?</summary>
+          <p>На рынках вы отдаёте 15–30% маржи посредникам и зависите от их лояльности. Собственный B2B-портал + прямой поток региональных магазинов и селлеров WB/Ozon позволяет продавать напрямую с фабрики с большей маржой, копить собственную клиентскую базу и не зависеть от одного оптового рынка.</p>
+        </details>
+        <details class="faq">
+          <summary>Мы уже пробовали Авито или Инстаграм, но звонят одни розничники «можно ли 1 пару 42 размера»?</summary>
+          <p>Это главная ошибка при запуске обычной рекламы без B2B-фильтра. Мы ставим на входе Telegram-бот и квиз-квалификатор: пока покупатель не укажет формат (магазин / селлер / СП), город и минимальный объём от 1–2 коробок (или 20–30 тыс. ₽), он не отвлекает вашего менеджера — розница отсеивается автоматически.</p>
+        </details>
+        <details class="faq">
+          <summary>А если у нас пока нет идеального порядка в 1С или МойСклад?</summary>
+          <p>Не проблема. На первом этапе мы запускаем B2B-витрину через управляемую таблицу-каталог с обновлением остатков за 2 минуты в день, а затем поэтапно подключаем синхронизацию с 1С или МойСклад без остановки текущих продаж.</p>
+        </details>
+        <details class="faq">
+          <summary>Как быстро появятся первые оптовые заявки и отгрузки?</summary>
+          <p>Первые заявки с Авито Pro и прямой B2B-рассылки поступают уже на 2–3 неделе работы (пока достраивается основной портал). Системный поток из Яндекс.Директ, Telegram и видео-контента выходит на стабильные обороты на 2-й месяц.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <section class="footer-cta">
+    <div>
+      <div style="font-size:0.75rem; font-weight:800; color:var(--gold); text-transform:uppercase;">Следующий шаг</div>
+      <h3 style="font-size:1.15rem; margin:3px 0;">Проведём 40-минутный разбор вашей фабрики и покажем прототип витрины на ваших моделях</h3>
+      <div style="font-size:0.84rem; color:#cbd5e1;" id="footerAgencyContact">Подготовлено: Global Spirit Agency (Глобал Плюс) · @unityspiritpartners</div>
+    </div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;" class="no-print">
+      <button class="btn btn-emerald" onclick="openTab('pricing')">Рассчитать окупаемость</button>
+      <button class="btn btn-gold" onclick="window.print()">Скачать / Отправить как PDF</button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Tab switching
+  function openTab(name) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    const pane = document.getElementById('tab-' + name);
+    const btn = document.querySelector('.tab-btn[data-tab="' + name + '"]');
+    if (pane) pane.classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showAllForPrint() {
+    const panes = document.querySelectorAll('.tab-pane');
+    const allOpen = Array.from(panes).every(p => p.classList.contains('active'));
+    if (allOpen) {
+      openTab('market');
+    } else {
+      panes.forEach(p => p.classList.add('active'));
+      document.querySelectorAll('.module-card').forEach(m => m.classList.add('open'));
+    }
+  }
+
+  // Personalization
+  function togglePersonalizer() {
+    document.getElementById('personalizerBox').classList.toggle('open');
+  }
+  function applyPersonalization() {
+    const f = document.getElementById('inFactoryName').value.trim() || 'Крупная обувная фабрика Кавказа';
+    const r = document.getElementById('inRegion').value.trim() || 'Северный Кавказ / Дагестан';
+    const a = document.getElementById('inAssortment').value.trim() || 'Мужская/повседневная кожаная обувь, кроссовки, берцы';
+    const c = document.getElementById('inAgencyContact').value.trim() || 'Global Spirit Agency (Глобал Плюс) · @unityspiritpartners';
+
+    document.getElementById('heroFactory').textContent = f;
+    document.getElementById('topClientLabel').textContent = 'Проект: ' + f + ' (' + r + ')';
+    document.getElementById('heroAssortment').textContent = a;
+    document.getElementById('tmaBrandName').textContent = '🏭 Оптовый B2B-Портал · ' + f;
+    document.getElementById('footerAgencyContact').textContent = 'Подготовлено: ' + c;
+  }
+
+  // Competitor filtering
+  function filterComp(tag, btn) {
+    document.querySelectorAll('#compFilters .pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#compTable tbody tr').forEach(tr => {
+      const tags = tr.getAttribute('data-tags') || '';
+      tr.style.display = (tag === 'all' || tags.includes(tag)) ? '' : 'none';
+    });
+  }
+
+  // Module accordion
+  function toggleModule(el) {
+    el.classList.toggle('open');
+  }
+
+  // TMA Simulator
+  let tmaState = {
+    mode: 'opt',
+    name: 'Лоферы/Туфли мужские (натур. кожа)',
+    price: 1850,
+    perBox: 8,
+    sizes: '39(1)-40(1)-41(2)-42(2)-43(1)-44(1)'
+  };
+
+  function setTmaMode(mode) {
+    tmaState.mode = mode;
+    document.getElementById('modeOptBtn').classList.toggle('active', mode === 'opt');
+    document.getElementById('modeStmBtn').classList.toggle('active', mode === 'stm');
+    const boxesInput = document.getElementById('tmaBoxes');
+    if (mode === 'stm') {
+      document.getElementById('tmaQtyLabel').textContent = 'Партия СТМ (коробов):';
+      if (parseInt(boxesInput.value || 0, 10) < 15) boxesInput.value = 25;
+    } else {
+      document.getElementById('tmaQtyLabel').textContent = 'Коробов:';
+      if (parseInt(boxesInput.value || 0, 10) > 20) boxesInput.value = 10;
+    }
+    updateTmaCalc();
+  }
+
+  function selectSku(card, name, price, perBox, sizes) {
+    document.querySelectorAll('.tma-sku').forEach(s => s.classList.remove('selected'));
+    card.classList.add('selected');
+    tmaState.name = name;
+    tmaState.price = price;
+    tmaState.perBox = perBox;
+    tmaState.sizes = sizes;
+    updateTmaCalc();
+  }
+
+  function updateTmaCalc() {
+    const boxes = Math.max(1, parseInt(document.getElementById('tmaBoxes').value || '1', 10));
+    const pairs = boxes * tmaState.perBox;
+    const stmDiscount = tmaState.mode === 'stm' && pairs >= 150 ? 0.94 : 1;
+    const stmFee = tmaState.mode === 'stm' ? 75 : 0; // брендинг стельки/коробки/бирки на пару
+    const unitPrice = Math.round(tmaState.price * stmDiscount + stmFee);
+    const total = pairs * unitPrice;
+    const fmt = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    document.getElementById('tmaSelectedName').textContent = tmaState.name + (tmaState.mode === 'stm' ? ' [Под ваш бренд СТМ]' : '');
+    document.getElementById('tmaSizes').textContent = 'Ростовка в коробе (' + tmaState.perBox + ' пар): ' + tmaState.sizes;
+    document.getElementById('tmaTotalText').textContent = 'Итого: ' + fmt(pairs) + ' пар (' + fmt(unitPrice) + ' ₽/пара) · ' + fmt(total) + ' ₽';
+    document.getElementById('tmaSubNote').textContent = tmaState.mode === 'stm'
+      ? 'СТМ: тиснение лого на стельке + брендированный короб + маркировка «Честный ЗНАК» + подготовка под FBO'
+      : 'Включено: передача кодов «Честный ЗНАК» по УПД + декларация соответствия ЕАЭС';
+    document.getElementById('tmaOrderFeedback').style.display = 'none';
+  }
+
+  function simulateTmaOrder() {
+    const tk = document.getElementById('tmaTk').value;
+    const fb = document.getElementById('tmaOrderFeedback');
+    fb.style.display = 'block';
+    fb.textContent = '✅ Демо-заявка создана в Битрикс24/amoCRM (сделка #B2B-482), резерв в 1С на 48ч оформлен, счёт и спецификация отправлены в Telegram-чат байера. Логистика: ' + tk + '.';
+  }
+
+  // Pricing model toggle
+  function setPayModel(model) {
+    document.getElementById('payHybridBtn').classList.toggle('active', model === 'hybrid');
+    document.getElementById('payFixedBtn').classList.toggle('active', model === 'fixed');
+    document.querySelectorAll('.tier-subprice').forEach(el => {
+      el.textContent = el.getAttribute('data-' + model);
+    });
+  }
+
+  // ROI Calculator
+  function recalcROI() {
+    const pkgKey = document.getElementById('calcPkg').value;
+    const check = parseInt(document.getElementById('rngCheck').value, 10);
+    const clients = parseInt(document.getElementById('rngClients').value, 10);
+    const repeat = parseFloat(document.getElementById('rngRepeat').value);
+    const margin = parseInt(document.getElementById('rngMargin').value, 10) / 100;
+    const adBudget = parseInt(document.getElementById('rngBudget').value, 10);
+
+    const pkgs = {
+      start: { label: 'Старт РФ (149 тыс + 35 тыс + 3%)', setup: 149000, retainer: 35000, pct: 0.03 },
+      system360: { label: 'Система 360° (290 тыс + 85 тыс + 2,5%)', setup: 290000, retainer: 85000, pct: 0.025 },
+      expansion: { label: 'Экспансия (490 тыс + 120 тыс + 2%)', setup: 490000, retainer: 120000, pct: 0.02 }
+    };
+    const p = pkgs[pkgKey];
+    const fmt = n => Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+    document.getElementById('lblPkg').textContent = p.label;
+    document.getElementById('lblAvgCheck').textContent = fmt(check) + ' ₽';
+    document.getElementById('lblNewClients').textContent = clients + ' клиентов';
+    document.getElementById('lblRepeat').textContent = repeat.toFixed(1) + 'x';
+    document.getElementById('lblMargin').textContent = Math.round(margin * 100) + '%';
+    document.getElementById('lblAdBudget').textContent = fmt(adBudget) + ' ₽';
+
+    const firstMonthNewRev = check * clients;
+    // 6 months: new cohorts accumulate + repeat orders across 6 months (conservative weighted factor)
+    const rev6m = firstMonthNewRev * 6 * ((1 + repeat) / 2);
+    const avgMonthlyRev6m = rev6m / 6;
+    const monthlyAgencyFee = p.retainer + (avgMonthlyRev6m * p.pct);
+    const totalAgency6m = p.setup + (p.retainer * 6) + (rev6m * p.pct);
+    const totalAds6m = adBudget * 6;
+    const totalInvest6m = totalAgency6m + totalAds6m;
+    const grossProfit6m = rev6m * margin;
+    const netProfit6m = grossProfit6m - totalInvest6m;
+    const roiPct = totalInvest6m > 0 ? (netProfit6m / totalInvest6m) * 100 : 0;
+
+    const month1Gross = firstMonthNewRev * margin;
+    const month1Agency = p.retainer + (firstMonthNewRev * p.pct);
+    const month1NetBeforeSetup = month1Gross - month1Agency - adBudget;
+    const paybackDays = month1NetBeforeSetup > 0 ? Math.max(15, Math.round((p.setup / month1NetBeforeSetup) * 30)) : 180;
+
+    document.getElementById('resMonthlyRev').textContent = fmt(firstMonthNewRev) + ' ₽';
+    document.getElementById('resRev6m').textContent = fmt(rev6m) + ' ₽';
+    document.getElementById('resAgencyCost').textContent = fmt(monthlyAgencyFee) + ' ₽/мес';
+    document.getElementById('resNetProfit6m').textContent = (netProfit6m >= 0 ? '+' : '') + fmt(netProfit6m) + ' ₽';
+    document.getElementById('resPayback').textContent = month1NetBeforeSetup > 0 ? '~' + paybackDays + ' дней' : '> 6 мес';
+    document.getElementById('resRoiPct').textContent = Math.round(roiPct) + '%';
+  }
+
+  recalcROI();
+  updateTmaCalc();
+</script>
+</body>
+</html>
